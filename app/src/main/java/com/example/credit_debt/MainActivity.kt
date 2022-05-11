@@ -11,15 +11,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
-    fun Notifier()
+    fun Notifier(Name:String,Value:Float)
     {
+        var tstring="c"
+        if(Value>0)
+            tstring="Debt"+Value.toString()
+        else if(Value<0)
+            tstring="Credit"+Value.toString()
         val CHANNEL_ID="0"
         val newMessageNotification = NotificationCompat.Builder(this@MainActivity, CHANNEL_ID)
             .setSmallIcon(R.drawable.crebtnotif)
-            .setContentTitle("")
-            .setContentText("")
+            .setContentTitle(Name)
+            .setContentText(tstring)
             //.setLargeIcon(emailObject.getSenderAvatar())
             .setGroup(GROUP_KEY_DEBT_CREDIT)
+            //.addAction()
             .build()
     }
 }

@@ -64,12 +64,12 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val result=db.rawQuery(query,null)
     }
 
-    fun postpone()
+    fun postpone(Id:Int)
     {
         val contentValues=ContentValues()
         val db=this.writableDatabase
         contentValues.put(COL_DATE,SystemClock.currentThreadTimeMillis())
-        val result=db.update(TABLENAME,contentValues,"COL_ID=",null)
+        val result=db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
     }
 
     fun insertData()
@@ -88,5 +88,21 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         else {
             Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun RemoveDebCred(Id:Int)
+    {
+        val contentValues=ContentValues()
+        val db=this.writableDatabase
+        contentValues.put(COL_VALUE,0)
+        val result=db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
+    }
+
+    fun ChangeDebCred(Id:Int,Nval:Int)
+    {
+        val contentValues=ContentValues()
+        val db=this.writableDatabase
+        contentValues.put(COL_VALUE,Nval)
+        val result=db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
     }
 }
