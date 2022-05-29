@@ -15,6 +15,7 @@
         android:clickable="true"
         android:contentDescription="@string/creditdebtaddbutt"
         android:focusable="true"
+        android:onClick="AddCreditDebt"
         app:backgroundTint="#89FD02"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,5 +61,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Credit" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:onClick="RemoveCreditDebt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_input_delete"
+        android:focusable="true" />
+
+    <Button
+        android:id="@+id/ChangeButton"
+        android:layout_width="97dp"
+        android:layout_height="52dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="ChangeCreditDebt"
+        android:text="@string/change"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/CreditDebtAddButt"
+        app:layout_constraintStart_toEndOf="@+id/floatingActionButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
