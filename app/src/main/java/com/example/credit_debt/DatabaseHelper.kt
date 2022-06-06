@@ -41,13 +41,28 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val db = this.readableDatabase
         val query = "Select * from $TABLENAME"
         val result = db.rawQuery(query, null)
+        if(result.moveToFirst())
+        {
+
+        }
     }
 
+    fun exist(per: Person): Boolean {
+        val db=this.readableDatabase
+        val query = "Select * from $TABLENAME where COL_NAME=$per.name and COL_SURNAME=$per.surname and COL_PHONE=$per.phone"
+        val result=db.rawQuery(query,null)
+        return result.moveToFirst()
+
+    }
     fun readDebt()
     {
         val db=this.readableDatabase
         val query="Select * from $TABLENAME where COL_VALUE>0"
         val result=db.rawQuery(query,null)
+        if(result.moveToFirst())
+        {
+
+        }
     }
 
     fun readCredit()
@@ -55,6 +70,10 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val db=this.readableDatabase
         val query="Select * from $TABLENAME where COL_VALUE<0"
         val result=db.rawQuery(query,null)
+        if(result.moveToFirst())
+        {
+
+        }
     }
 
     fun readExpired()
@@ -64,6 +83,10 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val db=this.readableDatabase
         val query="Select * from $TABLENAME where $time-COL_DATE>$month"
         val result=db.rawQuery(query,null)
+        if(result.moveToFirst())
+        {
+
+        }
     }
 
     fun postpone(Id:Int)
@@ -71,17 +94,17 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val contentValues=ContentValues()
         val db=this.writableDatabase
         contentValues.put(COL_DATE,SystemClock.currentThreadTimeMillis())
-        val result=db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
+        db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
     }
 
-    fun insertData(name:String, surname:String,phone:Int,value:Float)
+    fun insertData(per:Person)
     {
         val contentValues=ContentValues()
-        contentValues.put(COL_NAME,name)
-        contentValues.put(COL_SURNAME,surname)
-        contentValues.put(COL_VALUE,value)
+        contentValues.put(COL_NAME,per.name)
+        contentValues.put(COL_SURNAME,per.surname)
+        contentValues.put(COL_VALUE,per.value)
         contentValues.put(COL_DATE,SystemClock.currentThreadTimeMillis())
-        contentValues.put(COL_PHONE,phone)
+        contentValues.put(COL_PHONE,per.phone)
         val db=this.writableDatabase
         val result=db.insert(TABLENAME,null,contentValues)
         if (result == (0).toLong()) {
@@ -92,19 +115,34 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         }
     }
 
-    fun RemoveDebCred(Id:Int)
+    fun removeDebCred(Id:Int)
     {
         val contentValues=ContentValues()
         val db=this.writableDatabase
         contentValues.put(COL_VALUE,0)
-        val result=db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
+        db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
     }
 
-    fun ChangeDebCred(Id:Int,Nval:Int)
+    fun changeDebCred(Id:Int,Nval:Int)
     {
         val contentValues=ContentValues()
         val db=this.writableDatabase
         contentValues.put(COL_VALUE,Nval)
-        val result=db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
+        db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
+    }
+
+    fun changeDebCred(per:Person)
+    {
+        val contentValues=ContentValues()
+        val db=this.writableDatabase
+        val query = "Select * from $TABLENAME where COL_NAME=$per.name and COL_SURNAME=$per.surname and COL_PHONE=$per.phone"
+        val result=db.rawQuery(query,null)
+        if(result.moveToFirst())
+        {
+            val colindex=result.getColumnIndex(COL_ID)
+            val id=result.getInt(colindex)
+            contentValues.put(COL_VALUE, per.value)
+            db.update(TABLENAME, contentValues, "COL_ID=$id", null)
+        }
     }
 }
