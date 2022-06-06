@@ -18,6 +18,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
     val COL_ID = "id"
     val COL_VALUE = "value"
     val COL_DATE = "date"
+    val COL_PHONE = "phone"
     private val DATABASE_ALTER_TABLE_1 = ("ALTER TABLE "
             + TABLENAME) + " ADD COLUMN " + COL_VALUE + " float;"
 
@@ -27,7 +28,8 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
                 COL_NAME + " VARCHAR(256)," +
                 COL_SURNAME + " VARCHAR(256))"+
                 COL_VALUE +"FLOAT"+
-                COL_DATE +"LONG"
+                COL_DATE +"LONG"+
+                COL_PHONE +"INTEGER"
         db?.execSQL(createTable)
     }
 
@@ -72,14 +74,14 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val result=db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
     }
 
-    fun insertData()
+    fun insertData(name:String, surname:String,phone:Int,value:Float)
     {
         val contentValues=ContentValues()
-        TODO("data input required")
-        contentValues.put(COL_NAME,"")
-        contentValues.put(COL_SURNAME,"")
-        contentValues.put(COL_VALUE,0)
+        contentValues.put(COL_NAME,name)
+        contentValues.put(COL_SURNAME,surname)
+        contentValues.put(COL_VALUE,value)
         contentValues.put(COL_DATE,SystemClock.currentThreadTimeMillis())
+        contentValues.put(COL_PHONE,phone)
         val db=this.writableDatabase
         val result=db.insert(TABLENAME,null,contentValues)
         if (result == (0).toLong()) {

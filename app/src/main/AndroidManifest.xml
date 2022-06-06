@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Creditdebt">
         <activity
+            android:name=".AddCreditDebt"
+            android:exported="false"
+            android:theme="@android:style/Theme.Holo.Dialog" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
