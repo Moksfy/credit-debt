@@ -26,10 +26,10 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val createTable = "CREATE TABLE " + TABLENAME + " (" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COL_NAME + " VARCHAR(256)," +
-                COL_SURNAME + " VARCHAR(256))"+
-                COL_VALUE +"FLOAT"+
-                COL_DATE +"LONG"+
-                COL_PHONE +"INTEGER"
+                COL_SURNAME + " VARCHAR(256),"+
+                COL_VALUE +"REAL,"+
+                COL_DATE +"INTEGER,"+
+                COL_PHONE +"INTEGER)"
         db?.execSQL(createTable)
     }
 
@@ -49,7 +49,10 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
 
     fun exist(per: Person): Boolean {
         val db=this.readableDatabase
-        val query = "Select * from $TABLENAME where COL_NAME=$per.name and COL_SURNAME=$per.surname and COL_PHONE=$per.phone"
+        val name=per.name
+        val surname=per.surname
+        val phone=per.phone
+        val query = "Select * from $TABLENAME where $COL_NAME=$name and $COL_SURNAME=$surname and $COL_PHONE=$phone"
         val result=db.rawQuery(query,null)
         return result.moveToFirst()
 

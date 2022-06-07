@@ -1,11 +1,11 @@
 package com.example.credit_debt
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 
-class AddCreditDebt : AppCompatActivity() {
+class AddCreditDebt : Activity() {
     protected val db = DatabaseHelper(this);
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
