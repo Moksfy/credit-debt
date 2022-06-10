@@ -40,7 +40,12 @@ class MainActivity : AppCompatActivity() {
 
     fun RemoveCreditDebt(v:View)
     {
-        TODO()
+        val db=DatabaseHelper(this)
+        if(!db.readData().isEmpty())
+        {
+            val it = Intent(this, RemoveCredeb::class.java).apply { }
+            startActivity(it)
+        }
     }
 
     fun ChangeCreditDebt(v:View)

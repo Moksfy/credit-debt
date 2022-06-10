@@ -2,11 +2,11 @@ package com.example.credit_debt
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.os.SystemClock
 import android.widget.Toast
-import java.util.*
 
 class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDebt.db", null, 1)
 {
@@ -37,14 +37,16 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         TODO("Not yet implemented")
     }
 
-    fun readData() {
+    fun readData():List<Person> {
         val db = this.readableDatabase
         val query = "Select * from $TABLENAME"
         val result = db.rawQuery(query, null)
+        val ls:List<Person>
+        ls=emptyList()
         if(result.moveToFirst())
         {
-
         }
+        return ls
     }
 
     fun exist(per: Person): Boolean {

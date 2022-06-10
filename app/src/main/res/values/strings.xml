@@ -19,4 +19,5 @@
     <string name="back">Back</string>
     <string name="add">Add</string>
     <string name="phone">Phone</string>
+    <string name="crediti_debiti_presenti">crediti/debiti presenti</string>
 </resources>

@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.EditText
 
 class AddCreditDebt : Activity() {
-    protected val db = DatabaseHelper(this);
+    protected val db = DatabaseHelper(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_credit_debt)
