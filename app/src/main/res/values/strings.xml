@@ -20,4 +20,8 @@
     <string name="add">Add</string>
     <string name="phone">Phone</string>
     <string name="crediti_debiti_presenti">crediti/debiti presenti</string>
+    <string name="remove">remove</string>
+    <string name="removebutt">removebutt</string>
+    <string name="change_results">change results</string>
+    <string name="value">Value</string>
 </resources>

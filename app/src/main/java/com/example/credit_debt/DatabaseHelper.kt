@@ -26,10 +26,10 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val createTable = "CREATE TABLE " + TABLENAME + " (" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COL_NAME + " VARCHAR(256)," +
-                COL_SURNAME + " VARCHAR(256),"+
-                COL_VALUE +"REAL,"+
-                COL_DATE +"INTEGER,"+
-                COL_PHONE +"INTEGER)"
+                COL_SURNAME + " VARCHAR(256)," +
+                COL_VALUE + " FLOAT," +
+                COL_DATE + " INTEGER," +
+                COL_PHONE + " INTEGER)"
         db?.execSQL(createTable)
     }
 
@@ -41,10 +41,36 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val db = this.readableDatabase
         val query = "Select * from $TABLENAME"
         val result = db.rawQuery(query, null)
-        val ls:List<Person>
-        ls=emptyList()
+        val ls:MutableList<Person> = ArrayList()
         if(result.moveToFirst())
         {
+            do {
+                val per=Person()
+                per.name=result.getString(result.getColumnIndex(COL_NAME))
+                per.surname=result.getString(result.getColumnIndex(COL_SURNAME))
+                per.phone=result.getInt(result.getColumnIndex(COL_PHONE))
+                per.value=result.getFloat(result.getColumnIndex(COL_VALUE))
+            }while(result.moveToNext())
+        }
+        return ls
+    }
+
+    fun readNames():List<String>
+    {
+        val db = this.readableDatabase
+        val query = "Select $COL_ID,$COL_NAME,$COL_SURNAME from $TABLENAME"
+        val result = db.rawQuery(query, null)
+        val ls:MutableList<String> = ArrayList()
+        if(result.moveToFirst())
+        {
+            do {
+                val str=""
+                str.plus(result.getString(result.getColumnIndex(COL_NAME)))
+                str.plus(" ")
+                str.plus(result.getString(result.getColumnIndex(COL_SURNAME)))
+                str.plus((" "))
+                str.plus(result.getString(result.getColumnIndex(COL_ID)))
+            }while(result.moveToNext())
         }
         return ls
     }
@@ -54,44 +80,66 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val name=per.name
         val surname=per.surname
         val phone=per.phone
-        val query = "Select * from $TABLENAME where $COL_NAME=$name and $COL_SURNAME=$surname and $COL_PHONE=$phone"
+        val query =
+            "Select * from $TABLENAME where $COL_NAME='$name' and $COL_SURNAME='$surname'"
         val result=db.rawQuery(query,null)
         return result.moveToFirst()
 
     }
-    fun readDebt()
-    {
+    fun readDebt(): MutableList<Person> {
         val db=this.readableDatabase
-        val query="Select * from $TABLENAME where COL_VALUE>0"
+        val query="Select * from $TABLENAME where $COL_VALUE>0"
         val result=db.rawQuery(query,null)
+        val ls:MutableList<Person> = ArrayList()
         if(result.moveToFirst())
         {
-
+            do {
+                val per=Person()
+                per.name=result.getString(result.getColumnIndex(COL_NAME))
+                per.surname=result.getString(result.getColumnIndex(COL_SURNAME))
+                per.phone=result.getInt(result.getColumnIndex(COL_PHONE))
+                per.value=result.getFloat(result.getColumnIndex(COL_VALUE))
+            }while(result.moveToNext())
         }
+        return ls
     }
 
-    fun readCredit()
-    {
+    fun readCredit(): MutableList<Person> {
         val db=this.readableDatabase
-        val query="Select * from $TABLENAME where COL_VALUE<0"
+        val query="Select * from $TABLENAME where $COL_VALUE<0"
         val result=db.rawQuery(query,null)
+        val ls:MutableList<Person> = ArrayList()
         if(result.moveToFirst())
         {
-
+            do {
+                val per=Person()
+                per.name=result.getString(result.getColumnIndex(COL_NAME))
+                per.surname=result.getString(result.getColumnIndex(COL_SURNAME))
+                per.phone=result.getInt(result.getColumnIndex(COL_PHONE))
+                per.value=result.getFloat(result.getColumnIndex(COL_VALUE))
+            }while(result.moveToNext())
         }
+        return ls
     }
 
-    fun readExpired()
-    {
+    fun readExpired(): MutableList<Person> {
         val month=2592000000
         val time=SystemClock.currentThreadTimeMillis()
         val db=this.readableDatabase
-        val query="Select * from $TABLENAME where $time-COL_DATE>$month"
+        val query="Select * from $TABLENAME where$COL_DATE<$time+$month"
         val result=db.rawQuery(query,null)
+        val ls:MutableList<Person> = ArrayList()
         if(result.moveToFirst())
         {
-
+            do {
+                val per=Person()
+                per.name=result.getString(result.getColumnIndex(COL_NAME))
+                per.surname=result.getString(result.getColumnIndex(COL_SURNAME))
+                per.phone=result.getInt(result.getColumnIndex(COL_PHONE))
+                per.value=result.getFloat(result.getColumnIndex(COL_VALUE))
+            }while(result.moveToNext())
         }
+        return ls
     }
 
     fun postpone(Id:Int)
@@ -104,12 +152,14 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
 
     fun insertData(per:Person)
     {
-        val contentValues=ContentValues()
-        contentValues.put(COL_NAME,per.name)
-        contentValues.put(COL_SURNAME,per.surname)
-        contentValues.put(COL_VALUE,per.value)
-        contentValues.put(COL_DATE,SystemClock.currentThreadTimeMillis())
-        contentValues.put(COL_PHONE,per.phone)
+        val contentValues=ContentValues().apply {
+            put(COL_NAME, per.name)
+            put(COL_SURNAME, per.surname)
+            put(COL_VALUE, per.value)
+            put(COL_DATE, SystemClock.currentThreadTimeMillis())
+            put(COL_PHONE, per.phone)
+        }
+        print(contentValues.isEmpty)
         val db=this.writableDatabase
         val result=db.insert(TABLENAME,null,contentValues)
         if (result == (0).toLong()) {
@@ -139,8 +189,11 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
     fun changeDebCred(per:Person)
     {
         val contentValues=ContentValues()
+        val name=per.name
+        val surname=per.surname
+        val phone=per.phone
         val db=this.writableDatabase
-        val query = "Select * from $TABLENAME where COL_NAME=$per.name and COL_SURNAME=$per.surname and COL_PHONE=$per.phone"
+        val query = "Select * from $TABLENAME where $COL_NAME='$name' and $COL_SURNAME='$surname' and $COL_PHONE='$phone'"
         val result=db.rawQuery(query,null)
         if(result.moveToFirst())
         {

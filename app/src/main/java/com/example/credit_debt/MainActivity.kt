@@ -8,21 +8,24 @@ import androidx.core.app.NotificationCompat
 
 class MainActivity : AppCompatActivity() {
     val GROUP_KEY_DEBT_CREDIT ="CREDBT"
+    private val db = DatabaseHelper(this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
+        val lcred=db.readCredit()
+        val ldebt=db.readDebt()
     }
+
 
     fun Notifier(Name:String,Value:Float)
     {
         var tstring="c"
         if(Value>0)
-            tstring="Debt"+Value.toString()
+            tstring= "Debt$Value"
         else if(Value<0)
-            tstring="Credit"+Value.toString()
-        val CHANNEL_ID="0"
-        val newMessageNotification = NotificationCompat.Builder(this@MainActivity, CHANNEL_ID)
+            tstring= "Credit$Value"
+        val cHANNELID="0"
+        val newMessageNotification = NotificationCompat.Builder(this@MainActivity, cHANNELID)
             .setSmallIcon(R.drawable.crebtnotif)
             .setContentTitle(Name)
             .setContentText(tstring)
@@ -40,17 +43,14 @@ class MainActivity : AppCompatActivity() {
 
     fun RemoveCreditDebt(v:View)
     {
-        val db=DatabaseHelper(this)
-        if(!db.readData().isEmpty())
-        {
-            val it = Intent(this, RemoveCredeb::class.java).apply { }
-            startActivity(it)
-        }
+        val it = Intent(this, RemoveCredeb::class.java).apply { }
+        startActivity(it)
     }
 
     fun ChangeCreditDebt(v:View)
     {
-        TODO()
+            val it = Intent(this, ChangeDebCred::class.java).apply { }
+            startActivity(it)
     }
 
 }
