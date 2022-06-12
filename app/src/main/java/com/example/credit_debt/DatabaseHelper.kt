@@ -59,18 +59,20 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
     fun readNames():List<String>
     {
         val db = this.readableDatabase
-        val query = "Select $COL_ID,$COL_NAME,$COL_SURNAME from $TABLENAME"
+        val query = "Select $COL_ID,$COL_NAME,$COL_SURNAME,$COL_VALUE from $TABLENAME where $COL_VALUE!='0'"
         val result = db.rawQuery(query, null)
         val ls:MutableList<String> = ArrayList()
         if(result.moveToFirst())
         {
             do {
-                val str=""
-                str.plus(result.getString(result.getColumnIndex(COL_NAME)))
-                str.plus(" ")
-                str.plus(result.getString(result.getColumnIndex(COL_SURNAME)))
-                str.plus((" "))
-                str.plus(result.getString(result.getColumnIndex(COL_ID)))
+                var str=""
+                str=str.plus(result.getString(result.getColumnIndex(COL_ID)))
+                str=str.plus((" "))
+                str=str.plus(result.getString(result.getColumnIndex(COL_NAME)))
+                str=str.plus(" ")
+                str=str.plus(result.getString(result.getColumnIndex(COL_SURNAME)))
+                str=str.plus((" "))
+                str=str.plus(result.getString(result.getColumnIndex(COL_VALUE)))
                 ls.add(str)
             }while(result.moveToNext())
         }
@@ -179,8 +181,8 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
     {
         val contentValues=ContentValues()
         val db=this.writableDatabase
-        contentValues.put(COL_VALUE,0)
-        db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
+        contentValues.put(COL_VALUE,0.0)
+        db.update(TABLENAME,contentValues,"$COL_ID ='$Id'",null)
     }
 
     fun changeDebCred(Id:Int,Nval:Int)
@@ -188,7 +190,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         val contentValues=ContentValues()
         val db=this.writableDatabase
         contentValues.put(COL_VALUE,Nval)
-        db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
+        db.update(TABLENAME,contentValues,"$COL_ID ='$Id'",null)
     }
 
     fun changeDebCred(per:Person)
@@ -205,7 +207,21 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
             val colindex=result.getColumnIndex(COL_ID)
             val id=result.getInt(colindex)
             contentValues.put(COL_VALUE, per.value)
-            db.update(TABLENAME, contentValues, "COL_ID=$id", null)
+            db.update(TABLENAME, contentValues, "$COL_ID ='$id'", null)
+        }
+    }
+    fun changeDebCred(id:Int,value:Float)
+    {
+        val contentValues=ContentValues()
+        val db=this.writableDatabase
+        val query = "Select * from $TABLENAME where $COL_ID ='$id'"
+        val result=db.rawQuery(query,null)
+        if(result.moveToFirst())
+        {
+            val colindex=result.getColumnIndex(COL_ID)
+            val id=result.getInt(colindex)
+            contentValues.put(COL_VALUE, value)
+            db.update(TABLENAME, contentValues, "$COL_ID ='$id'", null)
         }
     }
 }

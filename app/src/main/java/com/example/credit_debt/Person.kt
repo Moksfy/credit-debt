@@ -18,14 +18,14 @@ class Person
 
 
     override fun toString(): String {
-        val str=""
-        str.plus(name)
-        str.plus("  ")
-        str.plus(surname)
-        str.plus("  ")
-        str.plus(phone.toString())
-        str.plus("  ")
-        str.plus(value.toString())
+        var str=""
+        str=str.plus(name)
+        str=str.plus("  ")
+        str=str.plus(surname)
+        str=str.plus("  ")
+        str=str.plus(phone.toString())
+        str=str.plus("  ")
+        str=str.plus(value.toString())
         return str
     }
 

@@ -14,16 +14,24 @@ import android.widget.Spinner
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_remove_credeb)
         val spinner:Spinner=findViewById(R.id.dropdownmenu)
-        val c:List<String> = db.readNames()
-            val adp = ArrayAdapter<String>(this, R.id.dropdownmenu, c)
-            spinner.adapter=adp
-            spinner.onItemSelectedListener=this
+        val c = db.readNames()
+        try
+        {
+            val adp = ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,c)
+            adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adp
+            spinner.onItemSelectedListener = this
+        }
+        catch(e:Exception)
+            {
+                finish()
+            }
 
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
         if (p0 != null) {
-            tmp=p0.getItemAtPosition(p2).toString()
+            tmp= p0.getItemAtPosition(p2) as String
 
         }
     }
@@ -36,7 +44,7 @@ import android.widget.Spinner
     {
         try {
             val temps = tmp.split(" ")
-            db.removeDebCred(temps[2].toInt())
+            db.removeDebCred(temps[0].toInt())
             finish()
         }
         catch (e:Exception)

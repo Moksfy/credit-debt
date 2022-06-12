@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.style.UpdateAppearance
 import android.view.View
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         val ldebt=db.readDebt()
         val lcred=db.readCredit()
         for (i in db.readExpired())
-           Notifier(i)
+           notifier(i)
         val cred= ArrayList<String>()
         val deb= ArrayList<String>()
         for(i in ldebt)
@@ -41,9 +42,10 @@ class MainActivity : AppCompatActivity() {
         val debadpt=CustomAdapter(deb)
         recyclercred.adapter=credadpt
         recyclerdeb.adapter=debadpt
+        recyclercred.scrollToPosition(0)
     }
 
-    fun Notifier(per:Person)
+    private fun notifier(per:Person)
     {
         var tstring=""
         if(per.value>0)
@@ -95,8 +97,9 @@ class MainActivity : AppCompatActivity() {
 
     fun ChangeCreditDebt(v:View)
     {
-            val it = Intent(this, ChangeDebCred::class.java).apply { }
-            startActivity(it)
+        val it = Intent(this, ChangeDebCred::class.java).apply { }
+        startActivity(it)
+
     }
 
 }
