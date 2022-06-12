@@ -45,11 +45,12 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
         if(result.moveToFirst())
         {
             do {
-                val per=Person()
-                per.name=result.getString(result.getColumnIndex(COL_NAME))
-                per.surname=result.getString(result.getColumnIndex(COL_SURNAME))
-                per.phone=result.getInt(result.getColumnIndex(COL_PHONE))
-                per.value=result.getFloat(result.getColumnIndex(COL_VALUE))
+                val name=result.getString(result.getColumnIndex(COL_NAME))
+                val surname=result.getString(result.getColumnIndex(COL_SURNAME))
+                val phone=result.getInt(result.getColumnIndex(COL_PHONE))
+                val value=result.getFloat(result.getColumnIndex(COL_VALUE))
+                val per=Person(name,surname,value,phone)
+                ls.add(per)
             }while(result.moveToNext())
         }
         return ls
@@ -70,6 +71,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
                 str.plus(result.getString(result.getColumnIndex(COL_SURNAME)))
                 str.plus((" "))
                 str.plus(result.getString(result.getColumnIndex(COL_ID)))
+                ls.add(str)
             }while(result.moveToNext())
         }
         return ls
@@ -88,17 +90,18 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
     }
     fun readDebt(): MutableList<Person> {
         val db=this.readableDatabase
-        val query="Select * from $TABLENAME where $COL_VALUE>0"
+        val query="Select * from $TABLENAME where $COL_VALUE>0.0"
         val result=db.rawQuery(query,null)
         val ls:MutableList<Person> = ArrayList()
         if(result.moveToFirst())
         {
             do {
-                val per=Person()
-                per.name=result.getString(result.getColumnIndex(COL_NAME))
-                per.surname=result.getString(result.getColumnIndex(COL_SURNAME))
-                per.phone=result.getInt(result.getColumnIndex(COL_PHONE))
-                per.value=result.getFloat(result.getColumnIndex(COL_VALUE))
+                val name=result.getString(result.getColumnIndex(COL_NAME))
+                val surname=result.getString(result.getColumnIndex(COL_SURNAME))
+                val phone=result.getInt(result.getColumnIndex(COL_PHONE))
+                val value=result.getFloat(result.getColumnIndex(COL_VALUE))
+                val per=Person(name,surname,value,phone)
+                ls.add(per)
             }while(result.moveToNext())
         }
         return ls
@@ -106,17 +109,18 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
 
     fun readCredit(): MutableList<Person> {
         val db=this.readableDatabase
-        val query="Select * from $TABLENAME where $COL_VALUE<0"
+        val query="Select * from $TABLENAME where $COL_VALUE<0.0"
         val result=db.rawQuery(query,null)
         val ls:MutableList<Person> = ArrayList()
         if(result.moveToFirst())
         {
             do {
-                val per=Person()
-                per.name=result.getString(result.getColumnIndex(COL_NAME))
-                per.surname=result.getString(result.getColumnIndex(COL_SURNAME))
-                per.phone=result.getInt(result.getColumnIndex(COL_PHONE))
-                per.value=result.getFloat(result.getColumnIndex(COL_VALUE))
+                val name=result.getString(result.getColumnIndex(COL_NAME))
+                val surname=result.getString(result.getColumnIndex(COL_SURNAME))
+                val phone=result.getInt(result.getColumnIndex(COL_PHONE))
+                val value=result.getFloat(result.getColumnIndex(COL_VALUE))
+                val per=Person(name,surname,value,phone)
+                ls.add(per)
             }while(result.moveToNext())
         }
         return ls
@@ -124,19 +128,20 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
 
     fun readExpired(): MutableList<Person> {
         val month=2592000000
-        val time=SystemClock.currentThreadTimeMillis()
+        val time=System.currentTimeMillis()
         val db=this.readableDatabase
-        val query="Select * from $TABLENAME where$COL_DATE<$time+$month"
+        val query="Select * from $TABLENAME where $COL_DATE<$time-$month"
         val result=db.rawQuery(query,null)
         val ls:MutableList<Person> = ArrayList()
         if(result.moveToFirst())
         {
             do {
-                val per=Person()
-                per.name=result.getString(result.getColumnIndex(COL_NAME))
-                per.surname=result.getString(result.getColumnIndex(COL_SURNAME))
-                per.phone=result.getInt(result.getColumnIndex(COL_PHONE))
-                per.value=result.getFloat(result.getColumnIndex(COL_VALUE))
+                val name=result.getString(result.getColumnIndex(COL_NAME))
+                val surname=result.getString(result.getColumnIndex(COL_SURNAME))
+                val phone=result.getInt(result.getColumnIndex(COL_PHONE))
+                val value=result.getFloat(result.getColumnIndex(COL_VALUE))
+                val per=Person(name,surname,value,phone)
+                ls.add(per)
             }while(result.moveToNext())
         }
         return ls
@@ -146,7 +151,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
     {
         val contentValues=ContentValues()
         val db=this.writableDatabase
-        contentValues.put(COL_DATE,SystemClock.currentThreadTimeMillis())
+        contentValues.put(COL_DATE,System.currentTimeMillis())
         db.update(TABLENAME,contentValues,"COL_ID=$Id",null)
     }
 
@@ -156,7 +161,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
             put(COL_NAME, per.name)
             put(COL_SURNAME, per.surname)
             put(COL_VALUE, per.value)
-            put(COL_DATE, SystemClock.currentThreadTimeMillis())
+            put(COL_DATE,System.currentTimeMillis())
             put(COL_PHONE, per.phone)
         }
         print(contentValues.isEmpty)

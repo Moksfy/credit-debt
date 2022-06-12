@@ -15,14 +15,12 @@ class AddCreditDebt : Activity() {
 
     fun add(v: View)
     {
-        val per=Person()
         try {
-
-
-            per.name = findViewById<EditText>(R.id.Name).text.toString()
-            per.surname = findViewById<EditText>(R.id.Surname).text.toString()
-            per.phone = findViewById<EditText>(R.id.Phone).text.toString().toInt()
-            per.value = findViewById<EditText>(R.id.Value).text.toString().toFloat()
+            val name = findViewById<EditText>(R.id.Name).text.toString()
+            val surname = findViewById<EditText>(R.id.Surname).text.toString()
+            val phone = findViewById<EditText>(R.id.Phone).text.toString().toInt()
+            val value = findViewById<EditText>(R.id.Value).text.toString().toFloat()
+            val per=Person(name,surname,value,phone)
             if (!db.exist(per)) {
                 db.insertData(per)
             }

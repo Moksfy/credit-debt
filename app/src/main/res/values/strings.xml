@@ -24,4 +24,7 @@
     <string name="removebutt">removebutt</string>
     <string name="change_results">change results</string>
     <string name="value">Value</string>
+    <string name="element_text" />
+    <string name="channel_name">fuffa</string>
+    <string name="channel_description">fuffa2</string>
 </resources>

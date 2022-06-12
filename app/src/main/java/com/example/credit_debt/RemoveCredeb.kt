@@ -34,9 +34,15 @@ import android.widget.Spinner
 
     fun removeCredeb(v:View)
     {
-        val temps = tmp.split(" ")
-        db.removeDebCred(temps[2].toInt())
-        finish()
+        try {
+            val temps = tmp.split(" ")
+            db.removeDebCred(temps[2].toInt())
+            finish()
+        }
+        catch (e:Exception)
+        {
+
+        }
     }
 
     fun backr(v:View)
