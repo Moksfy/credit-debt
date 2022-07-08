@@ -92,7 +92,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
     }
     fun readDebt(): MutableList<Person> {
         val db=this.readableDatabase
-        val query="Select * from $TABLENAME where $COL_VALUE>0.0"
+        val query="Select * from $TABLENAME where $COL_VALUE<0.0"
         val result=db.rawQuery(query,null)
         val ls:MutableList<Person> = ArrayList()
         if(result.moveToFirst())
@@ -111,7 +111,7 @@ class DatabaseHelper(var context: Context) : SQLiteOpenHelper(context, "CreditDe
 
     fun readCredit(): MutableList<Person> {
         val db=this.readableDatabase
-        val query="Select * from $TABLENAME where $COL_VALUE<0.0"
+        val query="Select * from $TABLENAME where $COL_VALUE>0.0"
         val result=db.rawQuery(query,null)
         val ls:MutableList<Person> = ArrayList()
         if(result.moveToFirst())

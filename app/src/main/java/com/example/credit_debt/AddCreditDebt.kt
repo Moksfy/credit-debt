@@ -1,6 +1,7 @@
 package com.example.credit_debt
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -30,6 +31,7 @@ class AddCreditDebt : Activity() {
         catch(e:Exception)
         {
         }
+        setResult(0)
         finish()
     }
 

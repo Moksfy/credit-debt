@@ -86,20 +86,24 @@ class MainActivity : AppCompatActivity() {
     fun AddCreditDebt(v: View)
     {
         val it=Intent(this,AddCreditDebt::class.java).apply {  }
-        startActivity(it)
+        startActivityForResult(it,0)
     }
 
     fun RemoveCreditDebt(v:View)
     {
         val it = Intent(this, RemoveCredeb::class.java).apply { }
-        startActivity(it)
+        startActivityForResult(it,0)
     }
 
     fun ChangeCreditDebt(v:View)
     {
         val it = Intent(this, ChangeDebCred::class.java).apply { }
-        startActivity(it)
+        startActivityForResult(it,0)
+    }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        recreate()
     }
 
 }

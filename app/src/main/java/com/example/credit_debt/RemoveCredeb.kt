@@ -45,6 +45,7 @@ import android.widget.Spinner
         try {
             val temps = tmp.split(" ")
             db.removeDebCred(temps[0].toInt())
+            setResult(0)
             finish()
         }
         catch (e:Exception)

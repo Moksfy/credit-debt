@@ -33,6 +33,7 @@ class ChangeDebCred : Activity(), AdapterView.OnItemSelectedListener {
             val temps = tmp.split(" ")
             val timp=findViewById<EditText>(R.id.valuechange).text.toString().toFloat()
             db.changeDebCred(temps[0].toInt(),timp)
+            setResult(0)
             finish()
         }
         catch (e:Exception)
